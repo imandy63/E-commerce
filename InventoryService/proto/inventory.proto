@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message AddInventoryRequest {
+    string productId = 1;
+    int32 stock = 2;
+    string shopId = 3;
+}
+
+message AddInventoryResponse {
+    bool success = 1;
+}
+
+service InventoryService {
+    rpc AddInventoryItem (AddInventoryRequest) returns (AddInventoryResponse);
+}

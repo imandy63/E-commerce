@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message GetProductByIdRequest {
+    string productId = 1;
+}
+
+message GetProductByIdResponse{
+    string productId = 1;
+    string shopId = 2;
+    string name = 3;
+    int32 quantity = 4;
+    int32 price = 5;
+}
+
+service ProductService  {
+    rpc GetProductById(GetProductByIdRequest) returns (GetProductByIdResponse);
+}

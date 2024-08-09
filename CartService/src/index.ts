@@ -6,8 +6,12 @@ import compression from "compression";
 import helmet from "helmet";
 import { Obj } from "./interfaces";
 import Router from "./route";
+import { startGRPCCartServer } from "./grpc/cart.server.grpc";
+import { redisInstance } from "./dbs/init.redis";
 dotenv.config();
+redisInstance.initRedis();
 MongoConnection();
+startGRPCCartServer();
 const app = express();
 
 app.use(express.json());

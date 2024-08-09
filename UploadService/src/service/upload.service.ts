@@ -1,4 +1,5 @@
 import { cloud } from "../config/config.cloudinary";
+import { BadRequestError } from "../core/error.response";
 import {
   UploadInput,
   UploadInputMultiple,
@@ -25,6 +26,7 @@ class UploadService {
       };
     } catch (err) {
       console.log("Error::", err);
+      throw new BadRequestError("Can't upload thumb");
     }
   };
 
@@ -33,8 +35,6 @@ class UploadService {
     folderName = "product/unused_product_image",
   }: UploadInputMultiple) => {
     try {
-      console.log(`files::`, files);
-
       if (!files.length) {
         return;
       }
@@ -56,10 +56,9 @@ class UploadService {
       return uploads;
     } catch (err) {
       console.log("Error::", err);
+      throw new BadRequestError("Can't upload images");
     }
   };
-
-  static moveFileToUse = async ({}) => {};
 }
 
 export { UploadService };

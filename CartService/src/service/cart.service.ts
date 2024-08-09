@@ -1,4 +1,5 @@
 import { BadRequestError, NotFoundError } from "../core/error.response";
+import { redisInstance } from "../dbs/init.redis";
 import { findProductById } from "../grpc/product.grpc";
 import {
   CartCreate,
@@ -42,12 +43,18 @@ class CartService {
   }
 
   static async getCart({ userId }: CartGet) {
-    console.log(userId);
-    return await cart
-      .findOne({
-        cart_userId: userId,
-      })
-      .lean();
+    const cacheCart = await redisInstance.get(`cart::${userId}`);
+    if (!cacheCart) {
+      const result = await cart
+        .findOne({
+          cart_userId: userId,
+        })
+        .lean();
+      await redisInstance.set(`cart::${userId}`, JSON.stringify(result));
+      return result;
+    }
+    await redisInstance.set(`cart::${userId}`, cacheCart);
+    return JSON.parse(cacheCart);
   }
 
   static async addProductToCart({ product, userId }: CartCreate) {
@@ -86,6 +93,8 @@ class CartService {
       return await userCart.save();
     }
 
+    await redisInstance.delete(`cart::${userId}`);
+
     return await CartService.updateCartProductQuantity({ userId, product });
   }
 
@@ -108,6 +117,8 @@ class CartService {
     if (quantity === 0) {
       return await CartService.deleteProductFromUserCart({ userId, productId });
     }
+
+    await redisInstance.delete(`cart::${userId}`);
 
     return await CartService.updateCartProductQuantity({
       userId,
@@ -141,6 +152,8 @@ class CartService {
     userCart.cart_count_product = userCart.cart_products.length;
 
     userCart.save();
+
+    await redisInstance.delete(`cart::${userId}`);
 
     return userCart;
   }

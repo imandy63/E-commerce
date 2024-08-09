@@ -150,8 +150,6 @@ class CommentService {
       throw new NotFoundError("Product is not found!");
     }
 
-    console.log(commentId);
-
     const foundComment = await comment.findById(commentId);
     if (!foundComment) {
       throw new NotFoundError("Comment is not found!");

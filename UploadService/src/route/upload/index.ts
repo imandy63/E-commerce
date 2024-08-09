@@ -2,8 +2,11 @@ import express from "express";
 import { asyncHandler } from "../../helpers/asyncHandler";
 import { uploadDisk } from "../../config/config.multer";
 import UploadController from "../../controller/upload.controller";
+import { authenticationGRPC } from "../../auth/authentication";
 
 const router = express.Router();
+
+router.use(asyncHandler(authenticationGRPC));
 
 router.use(
   "/thumb",

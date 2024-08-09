@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+message CartProduct {
+    string productId = 1;
+    int32 quantity = 2;
+    string name = 3;
+    double price = 4;
+    string shopId = 5;
+  }
+
+message CartRequest {
+    string cartId = 1;
+    string userId = 2;
+}
+
+message CartResponse {
+  int32 cart_count_product = 1;
+  repeated CartProduct cart_products = 2;
+}
+
+message RemoveCartItemsRequest {
+  string userId = 1;
+}
+
+message RemoveCartItemsResponse {
+  bool success = 1;
+}
+
+service CartService {
+  rpc GetCartDetails(CartRequest) returns (CartResponse);
+  rpc RemoveCartItems(RemoveCartItemsRequest) returns (RemoveCartItemsResponse);
+}
+  

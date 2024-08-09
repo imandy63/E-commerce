@@ -8,9 +8,12 @@ import { InventoryServiceService } from "../proto/inventory/inventory_grpc_pb";
 import {
   AddInventoryRequest,
   AddInventoryResponse,
+  ReserveInventoryRequest,
+  ReserveInventoryResponse,
 } from "../proto/inventory/inventory_pb";
 import { findProductById } from "./product.grpc";
 import { InventoryService } from "../services/inventory.service";
+import { reserveInventory } from "../models/repository/inventory.repository";
 
 const grpcServer = new Server();
 
@@ -45,6 +48,23 @@ grpcServer.addService(InventoryServiceService, {
       }
     } catch (err) {
       response.setSuccess(false);
+    }
+    cb(null, response);
+  },
+  reserveInventory: async (
+    call: ServerUnaryCall<ReserveInventoryRequest, ReserveInventoryResponse>,
+    cb: sendUnaryData<ReserveInventoryResponse>
+  ) => {
+    const request: ReserveInventoryRequest = call.request;
+    const productId = request.getProductid();
+    const quantity = request.getQuantity();
+    const cartId = request.getCartid();
+    const response: ReserveInventoryResponse = new ReserveInventoryResponse();
+    try {
+      const reserve = await reserveInventory({ cartId, quantity, productId });
+      response.setModifiedcount(reserve.modifiedCount);
+    } catch (err) {
+      response.setModifiedcount(0);
     }
     cb(null, response);
   },

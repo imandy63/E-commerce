@@ -1,4 +1,4 @@
-export type CartProduct = {
+export type CartProductOrigin = {
   productId: string;
   quantity: number;
   name: string;
@@ -26,7 +26,7 @@ export type CartUpdateQuantity = {
   userId: string;
   product: CartProductUpdateQuantity;
 };
-export type CartCreate = { userId: string; product: CartProduct };
+export type CartCreate = { userId: string; product: CartProductOrigin };
 export type CartUpdate = {
   userId: string;
   shop_order: CartShopProductUpdate;

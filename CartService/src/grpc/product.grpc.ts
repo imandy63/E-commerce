@@ -2,7 +2,7 @@ import { credentials } from "@grpc/grpc-js";
 import { ProductServiceClient } from "../proto/product/product_grpc_pb";
 import { GetProductByIdRequest } from "../proto/product/product_pb";
 import { GRPCConfig } from "../config/config.grpc";
-import { CartProduct } from "../interfaces/cart.interface";
+import { CartProductOrigin } from "../interfaces/cart.interface";
 
 const productURL = GRPCConfig.productURL;
 if (!productURL) {
@@ -17,7 +17,7 @@ const productClient = new ProductServiceClient(
 const findProductById = async (productId: string) => {
   const request = new GetProductByIdRequest();
   request.setProductid(productId);
-  return new Promise<CartProduct>((resolve, reject) => {
+  return new Promise<CartProductOrigin>((resolve, reject) => {
     productClient.getProductById(request, (err, response) => {
       if (err || !response || response === undefined) {
         reject("Service error");

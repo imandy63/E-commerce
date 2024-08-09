@@ -5,7 +5,6 @@ import {
   furniture,
   IProductWithType,
 } from "../models/product.model";
-// const { insertInventory } = require("../models/repositories/inventory.repo");
 import {
   isHex,
   removeUndefinedObject,
@@ -23,7 +22,6 @@ import {
 } from "../models/repository/product.repo";
 import { BadRequestError, ForbiddenError } from "../core/error.response";
 import { sendMessage } from "../kafka/producer.kafka";
-import { Types } from "mongoose";
 import * as dotenv from "dotenv";
 import { addIntoInventory } from "../grpc/inventory.grpc";
 dotenv.config();

@@ -1,6 +1,5 @@
-/E-commerce
 /sys_message_queue
 /API-gateway
 /DiscountService
-/NotificationService
-.gitignore
+/E-commerce
+/NotificationService``
